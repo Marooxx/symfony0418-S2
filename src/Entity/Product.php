@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -18,16 +19,37 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=50)
+     *  @Assert\Type(
+     *     type="string",
+     *     message="Le nom du produit doit être une chaine de caractères"
+     * )
+     * @Assert\Length(
+     *     min=4,
+     *     max=50,
+     *     minMessage="Le nom doit comporter au moins {{ limit }} caractères",
+     *     maxMessage="Le nom doit comporter maximum {{ limit }} caractères"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Type(
+     *     type="string",
+     *     message="La description du produit doit être une chaine de caractères"
+     * )
+     * @Assert\Length(
+     *     min=4,
+     *     max=500,
+     *     minMessage="La description doit comporter au moins {{ limit }} caractères",
+     *     maxMessage="La description doit comporter maximum {{ limit }} caractères"
+     * )
      */
     private $description;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @Assert\Regex("/^\d+([.]{1}\d{1,2})?$/")
      */
     private $price;
 
@@ -38,6 +60,9 @@ class Product
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\Type(
+     *     type="bool"
+     * )
      */
     private $isPublished;
 
@@ -56,6 +81,12 @@ class Product
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
+
+    public function __construct()
+    {
+        $this->nbViews = 0;
+        $this->createdAt = new \DateTime("now", new \DateTimeZone('Europe/Paris'));
+    }
 
     public function getId()
     {

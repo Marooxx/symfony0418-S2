@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
@@ -20,6 +21,16 @@ class Category
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Type(
+     *     type="string",
+     *     message="Le nom de la catégorie doit être une chaine de caractères"
+     * )
+     * @Assert\Length(
+     *     min=4,
+     *     max=50,
+     *     minMessage="Le nom doit comporter au moins {{ limit }} caractères",
+     *     maxMessage="Le nom doit comporter maximum {{ limit }} caractères"
+     * )
      */
     private $name;
 
@@ -31,6 +42,11 @@ class Category
     public function __construct()
     {
         $this->products = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     public function getId()
@@ -68,16 +84,4 @@ class Category
         return $this;
     }
 
-    public function removeProduct(Product $product): self
-    {
-        if ($this->products->contains($product)) {
-            $this->products->removeElement($product);
-            // set the owning side to null (unless already changed)
-            if ($product->getCategory() === $this) {
-                $product->setCategory(null);
-            }
-        }
-
-        return $this;
-    }
 }

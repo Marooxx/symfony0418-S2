@@ -19,32 +19,31 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
-//    /**
-//     * @return Product[] Returns an array of Product objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Récupère le produit ainsi que sa catégorie avec l'id donné
+     * @param int $id
+     * @return Product|null
+     * @throws \Exception
+     */
+    public function findOneWithCategory(int $id): ?Product
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Product
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+        $query = $this->createQueryBuilder('p')
+            ->join('p.category', 'c')
+            ->addSelect('c')
+            ->where('p.id = :id')->setParameter(":id", $id)
             ->getQuery()
-            ->getOneOrNullResult()
         ;
+
+        try {
+            return $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            throw new \Exception(
+                'Probleme dans ProductRepository::findOneWithCategory'.
+                $e->getMessage() .
+                var_dump($e)
+            );
+        }
     }
-    */
+
 }
