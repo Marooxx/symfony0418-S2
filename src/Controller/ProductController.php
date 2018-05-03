@@ -29,7 +29,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/produits/ajout")
+     * @Route("/produits/gestion/ajout")
      * @param Request $request
      * @return Response
      */
@@ -58,7 +58,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/produits/edition/{id}")
+     * @Route("/produits/gestion/edition/{id}")
      * @param Request $request
      * @param int $id
      * @return Response
@@ -107,7 +107,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/produits/suppression/{id}")
+     * @Route("/produits/gestion/suppression/{id}")
      * @param int $id
      * @return Response
      * @throws \Exception
