@@ -13,18 +13,25 @@ class ProductController extends Controller
 {
     /**
      * @Route("/produits")
+     * @param Request $request
+     * @return Response
      */
-    public function list(): Response
+    public function list(Request $request): Response
     {
-        // Récupération des produits
-        $products = $this
-            ->getDoctrine()
-            ->getRepository(Product::class)
-            ->findBy([], ["createdAt" => "DESC"])
-        ;
+        $em    = $this->get('doctrine.orm.entity_manager');
+        $dql   = "SELECT p FROM App:Product p";
+        $query = $em->createQuery($dql);
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            12
+        );
+
         // On retourne la vue en passant les produits
         return $this->render('product/list.html.twig', [
-            "products" => $products
+            "pagination" => $pagination
         ]);
     }
 
