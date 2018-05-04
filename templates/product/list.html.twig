@@ -6,17 +6,21 @@
 
         <div class="row">
             {%  for product in products %}
-                <div class="card col">
-                    <div class="card-body">
-                        <h4 class="card-title">
-                            {{ product.name }}
-                        </h4>
-                        <p class="card-text">{{ product.description }}</p>
-                        <p class="card-text">
-                            <a href="{{ path('app_product_show', {id: product.id}) }}" class="btn btn-outline-info">Détail</a>
-                            <a href="{{ path('app_product_edit', {id: product.id}) }}" class="btn btn-outline-warning">Modifier</a>
-                            <a href="{{ path('app_product_delete', {id: product.id}) }}" class="btn btn-outline-danger">Supprimer</a>
-                        </p>
+                <div class="col">
+                    <div class="card">
+                        {#<img class="card-img-top" src="{{ vich_uploader_asset(product, 'imageFile') }}" alt="{{ product.name }}" />#}
+                        <img class="card-img-top" src="{{ asset('img/products/'~product.imageName) }}" alt="{{ product.imageName }}">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                {{ product.name }}
+                            </h4>
+                            <p class="card-text">{{ product.description }}</p>
+                            <p class="card-text">
+                                <a href="{{ path('app_product_show', {id: product.id}) }}" class="btn btn-outline-info">Détail</a>
+                                <a href="{{ path('app_product_edit', {id: product.id}) }}" class="btn btn-outline-warning">Modifier</a>
+                                <a href="{{ path('app_product_delete', {id: product.id}) }}" class="btn btn-outline-danger">Supprimer</a>
+                            </p>
+                        </div>
                     </div>
                 </div>
             {% endfor %}
