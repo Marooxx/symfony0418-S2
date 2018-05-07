@@ -1,10 +1,36 @@
 sonata_admin:
-    title: 'Sonata Admin'
+    title: 'Administration'
     dashboard:
+        groups:
+            app.product:
+                label: "Les produits"
+                items:
+                    - admin.product
+            app.category:
+                label: "Les catégories"
+                items:
+                    - admin.category
         blocks:
-            - { type: sonata.admin.block.admin_list, position: left }
+            -
+                position: left
+                type: sonata.block.service.text
+                settings:
+                    content: "<h1>Bienvenue sur l'administration</h1>"
+            -
+                position: left
+                type: sonata.admin.block.admin_list
+                settings:
+                    groups: [app.product]
+            -
+                position: right
+                type: sonata.admin.block.admin_list
+                settings:
+                    groups: [app.category]
 
 sonata_block:
     blocks:
         sonata.admin.block.admin_list:
-            contexts: [admin]
+            contexts:   [admin]
+        sonata.admin.block.search_result:
+            contexts:   [admin]
+        sonata.block.service.text:

@@ -34,7 +34,9 @@ class ProductAdmin extends AbstractAdmin
             ->add('category.name')
             ->add('_action', 'actions', array(
                 'actions' => array(
-                    'show' => array(),
+                    'show' => array([
+                        //"template" => "@App/Admin/custom/show.html.twig"
+                    ]),
                     'edit' => array(),
                     'delete' => array(),
                 )
@@ -49,12 +51,17 @@ class ProductAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form)
     {
         $form
-            ->add('name')
-            ->add('description')
-            ->add('price')
-            ->add('isPublished')
-            ->add('imageFile', FileType::class)
-            ->add('category', ModelType::class)
+            ->with('Informations d\'identification')
+                ->add('name')
+                ->add('description')
+                ->add('price')
+                ->add('isPublished')
+            ->end()
+
+            ->with('Éléments liés')
+                ->add('imageFile', FileType::class)
+                ->add('category', ModelType::class)
+            ->end()
         ;
     }
 
@@ -74,6 +81,9 @@ class ProductAdmin extends AbstractAdmin
             ->add('category')
             ->add('createdAt')
             ->add('updatedAt')
+            ->add('imageName', null, array([
+                //"template" => "@App/Admin/custom/show.html.twig"
+            ]))
         ;
     }
 
