@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -9,6 +11,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
  */
 class Product
@@ -108,11 +111,18 @@ class Product
      */
     private $imageSize;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="products")
+     */
+    private $tags;
+
     public function __construct()
     {
         $this->nbViews = 0;
         $this->createdAt = new \DateTime("now", new \DateTimeZone('Europe/Paris'));
+        $this->tags = new ArrayCollection();
     }
+
 
     public function getId()
     {
@@ -262,5 +272,31 @@ class Product
     public function getImageSize(): ?int
     {
         return $this->imageSize;
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+        }
+
+        return $this;
     }
 }

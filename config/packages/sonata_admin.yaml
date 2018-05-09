@@ -7,9 +7,10 @@ sonata_admin:
                 items:
                     - admin.product
             app.category:
-                label: "Les catégories"
+                label: "Les éléments liés au produit"
                 items:
                     - admin.category
+                    - admin.tag
         blocks:
             -
                 position: left

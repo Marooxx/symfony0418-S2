@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: stagiaire
- * Date: 07/05/2018
- * Time: 14:53
- */
 
 namespace App\Admin;
 
@@ -61,6 +55,9 @@ class ProductAdmin extends AbstractAdmin
             ->with('Éléments liés')
                 ->add('imageFile', FileType::class)
                 ->add('category', ModelType::class)
+                ->add('tags', ModelType::class, [
+                    'multiple' => true
+                ])
             ->end()
         ;
     }
@@ -76,7 +73,7 @@ class ProductAdmin extends AbstractAdmin
             ->add('name')
             ->add('description')
             ->add('price')
-            ->add('isPublished')
+            ->add('isPublishedt')
             ->add('nbViews')
             ->add('category')
             ->add('createdAt')
