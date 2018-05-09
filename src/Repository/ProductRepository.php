@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -40,10 +41,24 @@ class ProductRepository extends ServiceEntityRepository
         } catch (\Exception $e) {
             throw new \Exception(
                 'Probleme dans ProductRepository::findOneWithCategory'.
-                $e->getMessage() .
-                var_dump($e)
+                $e->getMessage()
             );
         }
+    }
+
+    /**
+     * Récupère les produits d'une catégorie donnée
+     * @param int $id
+     * @return Query (le use pour la Query ; use Doctrine\ORM\Query;)
+     */
+    public function findByCategory(int $id): Query
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.category', 'c')
+            ->addSelect('c')
+            ->where('p.category = :id')->setParameter(":id", $id)
+            ->getQuery()
+        ;
     }
 
 }

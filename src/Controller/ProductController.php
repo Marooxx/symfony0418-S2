@@ -19,7 +19,7 @@ class ProductController extends Controller
     public function list(Request $request): Response
     {
         $em    = $this->get('doctrine.orm.entity_manager');
-        $dql   = "SELECT p FROM App:Product p";
+        $dql   = "SELECT p FROM App:Product p ORDER BY p.createdAt DESC";
         $query = $em->createQuery($dql);
 
         $paginator  = $this->get('knp_paginator');
@@ -132,4 +132,51 @@ class ProductController extends Controller
 
         return $this->redirectToRoute('app_product_list');
     }
+
+    /**
+     * @Route("/produit/category/{id}")
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function listByCategory(Request $request, int $id): Response
+    {
+        $query = $this->getDoctrine()
+            ->getRepository(Product::class)
+            ->findByCategory($id)
+        ;
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            12
+        );
+
+        return $this->render("product/list-by-categories.html.twig", [
+            "pagination" => $pagination
+        ]);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

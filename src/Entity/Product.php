@@ -119,10 +119,26 @@ class Product
     public function __construct()
     {
         $this->nbViews = 0;
-        $this->createdAt = new \DateTime("now", new \DateTimeZone('Europe/Paris'));
         $this->tags = new ArrayCollection();
     }
 
+    /**
+     * On met à jour la champ "updatedAt" APRES chaque "modification (update)"
+     * @ORM\PostUpdate
+     */
+    public function postUpdate()
+    {
+        $this->updatedAt = new \Datetime();
+    }
+
+    /**
+     * On initialise le champ "createdAt" AVANT "l'ajout (persist)" en BDD
+     * @ORM\PrePersist
+     */
+    public function initializeCreatedAt()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId()
     {

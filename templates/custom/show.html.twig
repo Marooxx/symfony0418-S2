@@ -93,10 +93,12 @@ file that was distributed with this source code.
             </span>
         </h1>
         <p class="text-muted">Publié le
-            {{ object.createdAt | date('d/m/Y à H:i') }},
+            {{ object.createdAt | date('d/m/Y à H:i', "Europe/Paris") }},
             {{ object.nbViews }} vues
         </p>
         <p>{{ object.description }}</p>
+
+        <p class="text-muted">Dernière modification le {{ object.updatedAt | date('d/m/Y H:i', "Europe/Paris") }}</p>
     </main>
-    </div>
+
 {% endblock %}

@@ -2,7 +2,7 @@
 
 {% block body %}
     <main class="container">
-        <h1>Liste des produits</h1>
+        <h2>Produits de la catégorie : {{ pagination.items[0].category }}</h2>
 
         {% include 'partials/loop-products-paginated.html.twig' %}
 

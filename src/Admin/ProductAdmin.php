@@ -24,6 +24,7 @@ class ProductAdmin extends AbstractAdmin
             ->add('price')
             ->add('isPublished')
             ->add('nbViews')
+            ->add('createdAt')
             ->add('updatedAt')
             ->add('category.name')
             ->add('_action', 'actions', array(
