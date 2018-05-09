@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -116,6 +117,11 @@ class Product
      */
     private $tags;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->nbViews = 0;
@@ -138,6 +144,15 @@ class Product
     public function initializeCreatedAt()
     {
         $this->createdAt = new \DateTime();
+        $this->slugifyName();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateSlug()
+    {
+        $this->slugifyName();
     }
 
     public function getId()
@@ -314,5 +329,23 @@ class Product
         }
 
         return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function slugifyName()
+    {
+        $slugger = new Slugify();
+        $this->slug = $slugger->slugify($this->name);
     }
 }

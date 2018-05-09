@@ -47,6 +47,32 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
+     * Récupère le produit ainsi que sa catégorie avec l'id donné
+     * @param string $slug
+     * @return Product|null
+     * @throws \Exception
+     */
+    public function findOneWithCategorySlug(string $slug): ?Product
+    {
+
+        $query = $this->createQueryBuilder('p')
+            ->join('p.category', 'c')
+            ->addSelect('c')
+            ->where('p.slug = :slug')->setParameter(":slug", $slug)
+            ->getQuery()
+        ;
+
+        try {
+            return $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            throw new \Exception(
+                'Probleme dans ProductRepository::findOneWithCategory'.
+                $e->getMessage()
+            );
+        }
+    }
+
+    /**
      * Récupère les produits d'une catégorie donnée
      * @param int $id
      * @return Query (le use pour la Query ; use Doctrine\ORM\Query;)

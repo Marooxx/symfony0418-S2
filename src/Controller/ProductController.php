@@ -97,16 +97,16 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/produits/{id}")
-     * @param int $id
+     * @Route("/produits/{slug}")
+     * @param string $slug
      * @return Response
      * @throws \Exception
      */
-    public function show(int $id): Response
+    public function show(string $slug): Response
     {
         $product = $this->getDoctrine()
             ->getRepository(Product::class)
-            ->findOneWithCategory($id)
+            ->findOneWithCategorySlug($slug)
         ;
         return $this->render("product/show.html.twig", [
             "product" => $product
